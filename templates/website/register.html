@@ -1,0 +1,23 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+
+{% block content %}
+<div id="register" class="row">
+    <div class="register-form col-md-4 mx-auto">
+        <h3>Register to play or host quiz</h3>
+        <hr>
+        <form action="" method="POST">
+            {% if error %}
+            <li>{{error}}</li>
+            {% endif %}
+            {% csrf_token %}
+            {{register_form.as_p}}
+            <div class="form-button">
+                <button class="btn btn-info w-100">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

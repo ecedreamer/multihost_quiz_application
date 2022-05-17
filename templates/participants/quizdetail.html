@@ -1,0 +1,80 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Quiz Detail | {{unique_code}}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h3>Quiz Detail: {{quiz.unique_code}}</h3>
+        <form action="" method="POST" id="quiz-form">
+            {% csrf_token %}
+            <div class="row">
+                {% for question in questions %}
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <p>{{question.position}}. {{question.question}}</p>
+                        {% if question.has_multiple_answers %}
+                        <small>(You can select multiple options)</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-10 mx-auto">
+                    <div class="row">
+                        {% for option in question.option_set.all %}
+                        <div class="col-md-3">
+                            {% if question.has_multiple_answers %}
+                            <input type="checkbox" value="{{option.position}}" name="question_{{question.id}}">
+                            <label>{{option.position}}. {{option.answer}}</label>
+                            {% else %}
+                            <input type="radio" value="{{option.position}}" name="question_{{question.id}}">
+                            <label>{{option.position}}. {{option.answer}}</label>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="col-md-6 mx-auto mt-5">
+                    <button class="btn btn-info w-100">Submit Answer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    var quizForm = document.getElementById("quiz-form")
+    var questions = [{% for question in questions %}"question_"+{{question.id}}, {% endfor %}]
+    quizForm.addEventListener("submit", function(event){
+        var answers = []
+        event.preventDefault()
+        questions.forEach(function(item, index){
+            var obj = {}
+            if(quizForm.elements[item][0].type == "checkbox"){
+                var options = document.getElementsByName(item);
+                var checked_value = []
+                options.forEach(function(item, index){
+                    if(item.checked){
+                        checked_value.push(item.value)
+                    }
+                })
+                console.log(checked_value)
+                obj[item] = checked_value
+                answers.push(obj)
+            }else{
+                obj[item] = quizForm.elements[item].value
+                answers.push(obj)
+            }
+        })
+        console.log(answers)
+        var confirm_submit = confirm("Are you sure to submit?")
+        if (confirm_submit){
+            quizForm.submit()
+        }
+
+    })
+</script>
+{% endblock %}

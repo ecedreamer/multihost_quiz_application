@@ -1,0 +1,23 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+<div id="login" class="row">
+    <div class="login-form col-md-4 mx-auto">
+        <h3>Login to your dashboard</h3>
+        <hr>
+        <form action="" method="POST">
+            {% if error %}
+            <li>{{error}}</li>
+            {% endif %}
+            {% csrf_token %}
+            {{login_form.as_p}}
+            <div class="form-button">
+                <button class="btn btn-info w-100">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
