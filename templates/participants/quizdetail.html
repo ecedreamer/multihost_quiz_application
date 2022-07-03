@@ -12,10 +12,11 @@
                 {% for question in questions %}
                 <div class="col-md-12">
                     <div class="col-md-12">
-                        <p>{{question.position}}. {{question.question}}</p>
+                        <p>{{question.position}}. {{question.question}}
                         {% if question.has_multiple_answers %}
+                        <br>
                         <small>(You can select multiple options)</small>
-                        {% endif %}
+                        {% endif %}</p>
                     </div>
                 </div>
                 <div class="col-md-10 mx-auto">
@@ -34,6 +35,7 @@
                     </div>
                 </div>
                 {% endfor %}
+                <input type="hidden" id="answers_field" name="answers_field">
                 <div class="col-md-6 mx-auto mt-5">
                     <button class="btn btn-info w-100">Submit Answer</button>
                 </div>
@@ -48,11 +50,11 @@
 <script>
     var quizForm = document.getElementById("quiz-form")
     var questions = [{% for question in questions %}"question_"+{{question.id}}, {% endfor %}]
+    var answers_field = document.getElementById("answers_field")
     quizForm.addEventListener("submit", function(event){
-        var answers = []
+        var answers = {}
         event.preventDefault()
         questions.forEach(function(item, index){
-            var obj = {}
             if(quizForm.elements[item][0].type == "checkbox"){
                 var options = document.getElementsByName(item);
                 var checked_value = []
@@ -62,14 +64,12 @@
                     }
                 })
                 console.log(checked_value)
-                obj[item] = checked_value
-                answers.push(obj)
+                answers[item] = checked_value
             }else{
-                obj[item] = quizForm.elements[item].value
-                answers.push(obj)
+                answers[item] = quizForm.elements[item].value
             }
         })
-        console.log(answers)
+        answers_field.value = JSON.stringify(answers)
         var confirm_submit = confirm("Are you sure to submit?")
         if (confirm_submit){
             quizForm.submit()

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'authapp',
     'quizapp',
     'website',
+    # 'django_authorizer',
 ]
 
 MIDDLEWARE = [

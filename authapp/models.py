@@ -60,8 +60,14 @@ class HostUser(TimeStamp):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     org_name = models.CharField(max_length=128)
 
+    def __str__(self) -> str:
+        return self.user.email
+
 
 class ParticipantUser(TimeStamp):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     host_group = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name="participants")
+
+    def __str__(self) -> str:
+        return self.user.email

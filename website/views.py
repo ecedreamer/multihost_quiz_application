@@ -15,7 +15,7 @@ class HomeView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-
+            "quizs": QuizSession.objects.all()
         }
         return render(request, self.template_name, context)
 
@@ -44,6 +44,12 @@ class LoginView(View):
             user = authenticate(request, email=email, password=password)
             if user:
                 login(request, user)
+            else:
+                context = {
+                    "login_form": LoginForm,
+                    "error": "form is not valid"
+                }
+                return render(request, self.template_name, context)
         else:
             context = {
                 "login_form": LoginForm,

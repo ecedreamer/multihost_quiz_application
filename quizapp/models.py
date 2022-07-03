@@ -3,6 +3,7 @@ from authapp.models import TimeStamp, HostUser, ParticipantUser
 import uuid 
 
 class QuizSession(TimeStamp):
+    title = models.CharField(max_length=200)
     unique_code = models.UUIDField(unique=True, default=uuid.uuid4)
     host_user = models.ForeignKey(HostUser, on_delete=models.CASCADE)
     total_questions = models.PositiveIntegerField()
@@ -14,6 +15,10 @@ class QuizSession(TimeStamp):
     submit_one_by_one = models.BooleanField(default=False)
     time_per_quiz_in_minutes = models.PositiveIntegerField(
         null=True, blank=True)
+    allow_multiple_submission = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.title
 
 
 # questions per steps
@@ -32,6 +37,9 @@ class Question(TimeStamp):
     options_count = models.PositiveIntegerField(default=4)
     has_multiple_answers = models.BooleanField(default=False)
 
+    def __str__(self) -> str:
+        return self.question
+
 
 class Option(TimeStamp):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -42,7 +50,7 @@ class Option(TimeStamp):
 
 class Submission(TimeStamp):
     participant_user = models.ForeignKey(
-        QuizSession, on_delete=models.RESTRICT)
+        ParticipantUser, on_delete=models.RESTRICT)
     quiz_session = models.ForeignKey(
         QuizSession, on_delete=models.RESTRICT, related_name="submissions")
     answers = models.TextField()
