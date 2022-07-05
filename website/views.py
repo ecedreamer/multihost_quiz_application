@@ -15,7 +15,8 @@ class HomeView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            "quizs": QuizSession.objects.all()
+            "quizs": QuizSession.objects.all(),
+            "random_data": "This is the random data"
         }
         return render(request, self.template_name, context)
 

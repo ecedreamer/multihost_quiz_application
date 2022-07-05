@@ -3,7 +3,8 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h3>Home page</h3>
+<h3>Home page is this</h3>
+<h5>{{random_data}}</h5>
 
 {% if request.user.is_authenticated %}
 <a href="">Host Quiz</a>
