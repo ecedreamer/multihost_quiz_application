@@ -8,6 +8,7 @@ urlpatterns = [
     path("", include("authapp.urls")),
     path("", include("quizapp.urls")),
     path("", include("website.urls")),
+    path("api/v1/", include("api_server.urls")),
 ]
 
 if settings.DEBUG:

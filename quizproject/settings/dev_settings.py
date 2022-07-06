@@ -1,4 +1,5 @@
 from .base_settings import *
+from datetime import timedelta
 
 
 ALLOWED_HOSTS = ["*"]
@@ -19,3 +20,8 @@ DATABASES = {
 
 STATICFIELDS_DIRS = [BASE_DIR / "static", ]
 MEDIA_ROOT = BASE_DIR / "d_media"
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}

@@ -11,7 +11,7 @@ class ParticipantUserMixin:
         if check_participant(request.user):
             self.participant = check_participant(request.user)
         else:
-            print("redirect to host participation create page")
+            print("redirect to host participation create page so")
 
         return super().dispatch(request, *args, **kwargs)
 
