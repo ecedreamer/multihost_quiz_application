@@ -9,7 +9,6 @@
 {% if request.user.is_authenticated %}
 <a href="">Host Quiz</a>
 
-
 <form action="" method="POST">
     {% csrf_token %}
     <input type="text" name="unique_code">
@@ -21,4 +20,14 @@
 <li><a href="{% url 'quizapp:quizdetail' quiz.unique_code %}">{{quiz.title}}</a></li>
 {% endfor %}
 {% endif %}
+{% endblock %}
+
+
+{% block js %}
+<script>
+    var source = new EventSource("/sse");
+    source.onmessage = function (event) {
+        console.log(event)
+    }; 
+</script>
 {% endblock %}

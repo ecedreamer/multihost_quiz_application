@@ -9,5 +9,8 @@ urlpatterns = [
     path("login", UserLoginAPIView.as_view()),
     path('refresh-token', TokenRefreshView.as_view()),
     path('profile', UserProfileAPIView.as_view()),
+
+    path("play-quiz-<unique_code>", QuizSessionPlayAPIView.as_view()),
+    
     
 ]

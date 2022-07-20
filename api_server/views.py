@@ -22,7 +22,7 @@ class UserLoginAPIView(APIView):
                 return Response(response, status=status.HTTP_200_OK)
         else:
             response = serializer.errors
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserProfileAPIView(APIView):
@@ -36,7 +36,17 @@ class UserProfileAPIView(APIView):
 # quiz session apis : list, detail, create, update, delete
 
 
+
+
+
 # question apis: create, update and delete
 
 
 # quiz play api and submit api
+class QuizSessionPlayAPIView(APIView):
+    permission_classes = [UserOnlyPermission, ]
+
+    def get(self, request, unique_code, *args, **kwargs):
+        quiz_session = QuizSession.objects.get(unique_code=unique_code)
+        serializer = QuizSessionPlaySerializer(quiz_session)
+        return Response(serializer.data, status=status.HTTP_200_OK)

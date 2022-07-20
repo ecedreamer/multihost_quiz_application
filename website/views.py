@@ -1,10 +1,10 @@
+from http.client import HTTPResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from quizapp.models import QuizSession
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from authapp.utils import check_host, check_participant
 
 
 User = get_user_model()
@@ -14,6 +14,7 @@ class HomeView(View):
     template_name = "website/home.html"
 
     def get(self, request, *args, **kwargs):
+        print(request.session.set_test_cookie())
         context = {
             "quizs": QuizSession.objects.all(),
             "random_data": "This is the random data"
@@ -94,3 +95,4 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("website:home")
+

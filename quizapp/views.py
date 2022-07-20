@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
-
+from website.utils import server_sent_event
 from quizapp.models import Question, QuizSession, Submission
 from authapp.utils import check_participant
 
