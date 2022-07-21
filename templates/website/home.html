@@ -27,7 +27,7 @@
 <script>
     var source = new EventSource("/sse");
     source.onmessage = function (event) {
-        console.log(event)
+        alert(event.data)
     }; 
 </script>
 {% endblock %}
