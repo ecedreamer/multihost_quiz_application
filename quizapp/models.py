@@ -16,6 +16,7 @@ class QuizSession(TimeStamp):
     time_per_quiz_in_minutes = models.PositiveIntegerField(
         null=True, blank=True)
     allow_multiple_submission = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title

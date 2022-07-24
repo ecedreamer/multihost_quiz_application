@@ -2,9 +2,8 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from website.utils import server_sent_event
 from quizapp.models import Question, QuizSession, Submission
-from authapp.utils import check_participant
+from authapp.utils import check_participant, check_host
 
 class ParticipantUserMixin:
     def dispatch(self, request, *args, **kwargs):
@@ -16,8 +15,17 @@ class ParticipantUserMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class QuizDetailView(ParticipantUserMixin, View):
-    template_name = "participants/quizdetail.html"
+class HostUserMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if check_host(request.user):
+            self.host = check_host(request.user)
+        else:
+            print("redirect to host participation create page so")
+
+        return super().dispatch(request, *args, **kwargs)
+
+class QuizStartView(ParticipantUserMixin, View):
+    template_name = "participants/quizstart.html"
 
     def get(self, request, uuid, *args, **kwargs):
 
@@ -47,7 +55,7 @@ class QuizDetailView(ParticipantUserMixin, View):
             return JsonResponse({"result": result})
         except Exception as e:
             print(f"Error occured: {e}")
-        return redirect("quizapp:quizdetail", uuid)
+        return redirect("quizapp:quizstart", uuid)
 
     def check_answer(self, client_answers: dict):
         if not isinstance(client_answers, dict):
@@ -79,3 +87,43 @@ class QuizDetailView(ParticipantUserMixin, View):
                     result["wrong_answers"].append(question_id)
         return result
 
+
+
+# host user
+
+class HostDashboardView(HostUserMixin, View):
+    template_name = "hosts/quizhostdashboard.html"
+    def get(self, request, *args, **kwargs):
+        context = {
+
+        }
+        return render(request, self.template_name, context)
+
+
+class HostQuizSessionListView(HostUserMixin, View):
+    template_name = "hosts/hostquizsessionlist.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            "quiz_list": QuizSession.objects.filter(host_user=self.host)
+        }
+        return render(request, self.template_name, context)
+
+
+class HostQuizSessionCreateView(HostUserMixin, View):
+    template_name = "hosts/hostquizsessioncreate.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {
+
+        }
+        return render(request, self.template_name, context)
+
+
+class HostQuizSessionDetailView(HostUserMixin, View):
+    template_name = "hosts/quizhostdashboard.html"
+    def get(self, request, *args, **kwargs):
+        context = {
+
+        }
+        return render(request, self.template_name, context)
