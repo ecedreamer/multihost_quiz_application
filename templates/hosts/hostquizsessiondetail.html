@@ -1,0 +1,89 @@
+{% extends 'hosts/dashboardbase.html' %}
+
+{% block title %}{{quiz_session.title}}{% endblock %}
+{% block quizsessionlistactive %}active{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Quiz Title: {{quiz_session.title}}</h5>
+            </div>
+        </div>
+        <div class="row bg-light">
+            <div class="col-md-4">
+                <div>
+                    <p><span class="font-weight-bold">Question Count: </span> {{quiz_session.total_questions}}</p>
+                </div>
+                <p><span class="font-weight-bold">Associated Questions: </span> {{quiz_session.question_set.count}}</p>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Add Question</h5>
+            </div>
+            <div class="col-md-12">
+                <form action="{% url 'quizapp:hostquizsessionaddquestion' quiz_session.unique_code %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea type="text" class="form-control" placeholder="Question..." rows="3"></textarea>
+                        </div>
+                        
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label for="">Question Position</label>
+                            <input type="number" name="position" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Option Count</label>
+                            <input type="number" name="option_count" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">Has Multiple Answers?</label><br>
+                            <input type="checkbox" name="has_multiple_answers">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6 mx-auto">
+                            <button class="btn btn-info w-100">Add question</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h5>All Questions </h5><hr>
+            </div>
+            <div class="col-md-12">
+                {% for question in question_list %}
+                <div class="row mb-2 p-1">
+                    <div class="col-md-12">
+                        <p style="font-weight: bold;">{{question.position}}. {{question.question}}</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row p-2">
+                            {% for option in question.option_set.all %}
+                            <div class="col-md-3">
+                                <p>{{option.position}}. <span style="{% if option.is_right_answer %}background-color: green; padding: 3px;color:white;{% endif %}">{{option.answer}}</span></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

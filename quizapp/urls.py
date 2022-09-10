@@ -12,5 +12,6 @@ urlpatterns = [
     path("hosts/", HostDashboardView.as_view(), name="quizhostdashboard"),
     path("hosts/quiz-list/", HostQuizSessionListView.as_view(), name="hostquizsessionlist"),
     path("hosts/quiz-create/", HostQuizSessionCreateView.as_view(), name="hostquizsessioncreate"),
-    path("hosts/<uuid>-detail/", HostQuizSessionDetailView.as_view(), name="hostquizsessiondetail"),
+    path("hosts/quiz-<unique_code>/", HostQuizSessionDetailView.as_view(), name="hostquizsessiondetail"),
+    path("hosts/quiz-<unique_code>/add-question/", HostQuizSessionAddQuestionView.as_view(), name="hostquizsessionaddquestion"),
 ]

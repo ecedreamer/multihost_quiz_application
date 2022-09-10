@@ -41,12 +41,18 @@ class Question(TimeStamp):
     def __str__(self) -> str:
         return self.question
 
+    class Meta:
+        ordering = ["position"]
+
 
 class Option(TimeStamp):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     position = models.CharField(max_length=1)
     answer = models.CharField(max_length=500)
     is_right_answer = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["position"]
 
 
 class Submission(TimeStamp):

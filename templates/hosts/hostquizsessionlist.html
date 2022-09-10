@@ -11,7 +11,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Total Question</th>
+                    <th scope="col">Total Questions</th>
+                    <th scope="col">Associated Questions</th>
                     <th scope="col">Created At</th>
                 </tr>
             </thead>
@@ -19,8 +20,9 @@
                 {% for quiz in quiz_list %}
                 <tr>
                     <th scope="row">{{forloop.counter}}</th>
-                    <td>{{quiz.title}}</td>
+                    <td><a href="{% url 'quizapp:hostquizsessiondetail' quiz.unique_code %}">{{quiz.title}}</a></td>
                     <td>{{quiz.total_questions}}</td>
+                    <td>{{quiz.question_set.count}}</td>
                     <td>{{quiz.created_at}}</td>
                 </tr>
                 {% endfor %}
